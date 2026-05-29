@@ -1,5 +1,7 @@
 import { AdBanner } from '@adsterra-ad/react';
 
+const adKey = 'YOUR_ADSTERRA_KEY';
+
 const demoItems = [
   { title: 'Top Left', props: { adLabelPosition: 'top-left' as const } },
   { title: 'Top Center', props: { adLabelPosition: 'top-center' as const } },
@@ -19,7 +21,7 @@ export default function App() {
         {demoItems.map((item) => (
           <article key={item.title} className="card">
             <h3>{item.title}</h3>
-            <AdBanner format="300x250" {...item.props} />
+            <AdBanner format="300x250" adKey={adKey} {...item.props} />
           </article>
         ))}
       </section>

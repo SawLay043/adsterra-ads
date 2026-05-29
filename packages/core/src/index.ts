@@ -11,6 +11,8 @@ export interface AdUnitRegistry {
   [format: string]: AdConfig;
 }
 
+export type AdKeyRegistry = Partial<Record<AdFormat, string>>;
+
 export interface BannerMessage {
   type: 'ad-load-success' | 'ad-load-error';
   bannerId?: string;
@@ -27,6 +29,20 @@ export const DEFAULT_AD_CONFIGS: Record<AdFormat, AdConfig> = {
   '160x600': { key: 'b609dd6697e15c82d9600af75401fbcc', width: 160, height: 600 },
   native: { key: 'a03627a5221f2054c614d3cc3e9ab09c', width: '100%', height: 'auto' }
 };
+
+let runtimeAdKeys: AdKeyRegistry = {};
+
+export function configureAds(keys: AdKeyRegistry): void {
+  runtimeAdKeys = { ...runtimeAdKeys, ...keys };
+}
+
+export function resetAdsConfig(): void {
+  runtimeAdKeys = {};
+}
+
+export function getConfiguredAdKey(format: AdFormat): string | undefined {
+  return runtimeAdKeys[format];
+}
 
 export function getBannerStyle(config: AdConfig): string {
   const width = typeof config.width === 'number' ? `${config.width}px` : config.width;
@@ -112,4 +128,15 @@ ${sOpen} type="text/javascript" src="https://www.highperformanceformat.com/${con
 
 export function createBannerId(): string {
   return Math.random().toString(36).slice(2, 9);
+}
+
+export function withAdKey(config: AdConfig, adKey?: string): AdConfig {
+  if (!adKey) return config;
+  return { ...config, key: adKey };
+}
+
+export function resolveAdConfig(format: AdFormat, adKey?: string): AdConfig {
+  const base = DEFAULT_AD_CONFIGS[format];
+  const resolvedKey = adKey || getConfiguredAdKey(format);
+  return withAdKey(base, resolvedKey);
 }

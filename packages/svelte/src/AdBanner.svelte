@@ -1,9 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { DEFAULT_AD_CONFIGS, buildSrcDoc, createBannerId, type AdFormat, type AdProvider, type BannerMessage } from '@adsterra-ad/core';
+  import { buildSrcDoc, createBannerId, resolveAdConfig, type AdFormat, type AdProvider, type BannerMessage } from '@adsterra-ad/core';
 
   export let format: AdFormat;
   export let provider: AdProvider = 'adsterra';
+  export let adKey = '';
   export let className = '';
   export let adLabel = 'Advertisement';
   export let showAdLabel = true;
@@ -22,7 +23,7 @@
   let adLoaded = false;
   let adFailed = false;
 
-  let config = DEFAULT_AD_CONFIGS[format];
+  let config = resolveAdConfig(format, adKey || undefined);
   let iframeSrcDoc = '';
   let wrapperStyle = '';
   let topLabel = false;
@@ -32,7 +33,7 @@
   let visibilityStyle = '';
 
   $: if (provider !== activeProvider) activeProvider = provider;
-  $: config = DEFAULT_AD_CONFIGS[format];
+  $: config = resolveAdConfig(format, adKey || undefined);
   $: iframeSrcDoc = buildSrcDoc({ format, provider: activeProvider, config, bannerId });
 
   $: wrapperStyle = `display:inline-flex;flex-direction:column;align-items:${adLabelPosition.endsWith('left') ? 'flex-start' : adLabelPosition.endsWith('right') ? 'flex-end' : 'center'};`;

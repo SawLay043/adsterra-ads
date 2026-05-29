@@ -4,6 +4,7 @@
 
   export let format: AdFormat;
   export let provider: AdProvider = 'adsterra';
+  export let adKey = '';
   export let className = '';
   export let adLabel = 'Advertisement';
   export let showAdLabel = true;
@@ -29,6 +30,7 @@
     <AdBanner
       {format}
       {provider}
+      {adKey}
       {className}
       {adLabel}
       {showAdLabel}

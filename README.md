@@ -29,7 +29,12 @@ Note: direct GitHub install is best for testing. For public consumption, publish
 ### React
 
 ```tsx
-import { AdBanner, AdContainer } from '@adsterra-ad/react';
+import { AdBanner, AdContainer, configureAds } from '@adsterra-ad/react';
+
+configureAds({
+  '300x250': 'YOUR_300x250_KEY',
+  '728x90': 'YOUR_728x90_KEY'
+});
 
 export default function Page() {
   return (
@@ -54,7 +59,12 @@ export default function Page() {
 
 ```vue
 <script setup lang="ts">
-import { AdBanner, AdContainer } from '@adsterra-ad/vue';
+import { AdBanner, AdContainer, configureAds } from '@adsterra-ad/vue';
+
+configureAds({
+  '300x250': 'YOUR_300x250_KEY',
+  '728x90': 'YOUR_728x90_KEY'
+});
 </script>
 
 <template>
@@ -76,7 +86,12 @@ import { AdBanner, AdContainer } from '@adsterra-ad/vue';
 
 ```svelte
 <script lang="ts">
-  import { AdBanner, AdContainer } from '@adsterra-ad/svelte';
+  import { AdBanner, AdContainer, configureAds } from '@adsterra-ad/svelte';
+
+  configureAds({
+    '300x250': 'YOUR_300x250_KEY',
+    '728x90': 'YOUR_728x90_KEY'
+  });
 </script>
 
 <AdBanner
@@ -96,6 +111,7 @@ import { AdBanner, AdContainer } from '@adsterra-ad/vue';
 
 - `format`: `'300x250' | '160x300' | '728x90' | '320x50' | '160x600' | 'native'`
 - `provider?`: `'adsterra'`
+- `adKey?`: `string` (optional per-component key override)
 - `adLabel?`: `string`
 - `showAdLabel?`: `boolean`
 - `adLabelPosition?`: `'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'`
@@ -124,5 +140,7 @@ npm run dev:svelte
 
 ## Notes
 
+- Preferred: call `configureAds({ ... })` once at app startup.
+- Optional: pass `adKey` on a specific `AdBanner`/`AdContainer` to override global config.
 - Replace demo ad keys with your own keys before production usage.
 - `SocialBar` stores close state in `sessionStorage`.

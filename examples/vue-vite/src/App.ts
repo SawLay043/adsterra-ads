@@ -1,7 +1,21 @@
 import { defineComponent, h } from 'vue';
 import { AdBanner } from '@adsterra-ad/vue';
 
-const demoItems = [
+type AdLabelPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right';
+
+type DemoItem =
+  | { title: string; props: { adLabelPosition: AdLabelPosition } }
+  | { title: string; props: { showAdLabel: false } };
+
+const adKey = 'YOUR_ADSTERRA_KEY';
+
+const demoItems: DemoItem[] = [
   { title: 'Top Left', props: { adLabelPosition: 'top-left' } },
   { title: 'Top Center', props: { adLabelPosition: 'top-center' } },
   { title: 'Top Right', props: { adLabelPosition: 'top-right' } },
@@ -21,7 +35,7 @@ export default defineComponent({
         demoItems.map((item) =>
           h('article', { class: 'card', key: item.title }, [
             h('h3', item.title),
-            h(AdBanner, { format: '300x250', ...item.props })
+            h(AdBanner, { format: '300x250', adKey, ...item.props })
           ])
         )
       )

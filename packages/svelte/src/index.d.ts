@@ -12,6 +12,7 @@ export type AdLabelPosition =
 export interface AdBannerProps {
   format: AdFormat;
   provider?: AdProvider;
+  adKey?: string;
   className?: string;
   adLabel?: string;
   showAdLabel?: boolean;
@@ -23,6 +24,7 @@ export interface AdBannerProps {
 export interface AdContainerProps {
   format: AdFormat;
   provider?: AdProvider;
+  adKey?: string;
   className?: string;
   adLabel?: string;
   showAdLabel?: boolean;

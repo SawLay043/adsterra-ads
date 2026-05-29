@@ -1,7 +1,21 @@
 <script lang="ts">
   import { AdBanner } from '@adsterra-ad/svelte';
 
-  const demoItems = [
+  type AdLabelPosition =
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right';
+
+  type DemoItem =
+    | { title: string; props: { adLabelPosition: AdLabelPosition } }
+    | { title: string; props: { showAdLabel: false } };
+
+  const adKey = 'YOUR_ADSTERRA_KEY';
+
+  const demoItems: DemoItem[] = [
     { title: 'Top Left', props: { adLabelPosition: 'top-left' } },
     { title: 'Top Center', props: { adLabelPosition: 'top-center' } },
     { title: 'Top Right', props: { adLabelPosition: 'top-right' } },
@@ -19,7 +33,7 @@
     {#each demoItems as item}
       <article class="card">
         <h3>{item.title}</h3>
-        <AdBanner format="300x250" {...item.props} />
+        <AdBanner format="300x250" adKey={adKey} {...item.props} />
       </article>
     {/each}
   </section>

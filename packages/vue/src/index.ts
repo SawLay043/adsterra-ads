@@ -1,12 +1,15 @@
 import { defineComponent, h, onMounted, onUnmounted, ref, watch, computed, type PropType } from 'vue';
 import {
-  DEFAULT_AD_CONFIGS,
   buildSrcDoc,
+  configureAds,
   createBannerId,
+  resolveAdConfig,
   type AdFormat,
   type AdProvider,
   type BannerMessage
 } from '@adsterra-ad/core';
+
+export { configureAds };
 
 type AdLabelPosition =
   | 'top-left'
@@ -21,6 +24,7 @@ export const AdBanner = defineComponent({
   props: {
     format: { type: String as PropType<AdFormat>, required: true },
     provider: { type: String as PropType<AdProvider>, default: 'adsterra' },
+    adKey: { type: String, default: '' },
     adLabel: { type: String, default: 'Advertisement' },
     showAdLabel: { type: Boolean, default: true },
     adLabelPosition: { type: String as PropType<AdLabelPosition>, default: 'top-left' },
@@ -35,7 +39,7 @@ export const AdBanner = defineComponent({
 
     watch(() => props.provider, (next) => { activeProvider.value = next; });
 
-    const config = computed(() => DEFAULT_AD_CONFIGS[props.format]);
+    const config = computed(() => resolveAdConfig(props.format, props.adKey || undefined));
     const srcDoc = computed(() =>
       buildSrcDoc({ format: props.format, provider: activeProvider.value, config: config.value, bannerId })
     );
@@ -127,6 +131,7 @@ export const AdContainer = defineComponent({
   props: {
     format: { type: String as PropType<AdFormat>, required: true },
     provider: { type: String as PropType<AdProvider>, default: 'adsterra' },
+    adKey: { type: String, default: '' },
     className: { type: String, default: '' },
     adLabel: { type: String, default: 'Advertisement' },
     showAdLabel: { type: Boolean, default: true },
@@ -153,6 +158,7 @@ export const AdContainer = defineComponent({
         h(AdBanner, {
           format: props.format,
           provider: props.provider,
+          adKey: props.adKey,
           className: props.className,
           adLabel: props.adLabel,
           showAdLabel: props.showAdLabel,

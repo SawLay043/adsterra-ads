@@ -1,13 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  DEFAULT_AD_CONFIGS,
   buildSrcDoc,
+  configureAds,
   createBannerId,
   getBannerStyle,
+  resolveAdConfig,
   type AdFormat,
   type AdProvider,
   type BannerMessage
 } from '@adsterra-ad/core';
+
+export { configureAds };
 
 export type AdLabelPosition =
   | 'top-left'
@@ -21,6 +24,7 @@ export interface AdBannerProps {
   format: AdFormat;
   provider?: AdProvider;
   className?: string;
+  adKey?: string;
   adLabel?: string;
   showAdLabel?: boolean;
   adLabelPosition?: AdLabelPosition;
@@ -32,6 +36,7 @@ export function AdBanner({
   format,
   provider = 'adsterra',
   className,
+  adKey,
   adLabel = 'Advertisement',
   showAdLabel = true,
   adLabelPosition = 'top-left',
@@ -45,7 +50,7 @@ export function AdBanner({
 
   useEffect(() => setActiveProvider(provider), [provider]);
 
-  const config = DEFAULT_AD_CONFIGS[format];
+  const config = resolveAdConfig(format, adKey);
   const srcDoc = useMemo(
     () => buildSrcDoc({ format, provider: activeProvider, config, bannerId: bannerId.current }),
     [format, activeProvider, config]
@@ -102,6 +107,7 @@ export function AdContainer({
   format,
   provider = 'adsterra',
   className,
+  adKey,
   adLabel,
   showAdLabel,
   adLabelPosition,
@@ -120,6 +126,7 @@ export function AdContainer({
         format={format}
         provider={provider}
         className={className}
+        adKey={adKey}
         adLabel={adLabel}
         showAdLabel={showAdLabel}
         adLabelPosition={adLabelPosition}
