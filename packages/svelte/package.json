@@ -1,6 +1,6 @@
 {
   "name": "@adsterra-ad/svelte",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "svelte": "src/index.ts",
   "types": "src/index.d.ts",
@@ -15,11 +15,20 @@
     "dist",
     "src"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SawLay043/adsterra-ads.git",
+    "directory": "packages/svelte"
+  },
+  "homepage": "https://github.com/SawLay043/adsterra-ads",
+  "bugs": {
+    "url": "https://github.com/SawLay043/adsterra-ads/issues"
+  },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@adsterra-ad/core": "0.1.0"
+    "@adsterra-ad/core": "0.1.1"
   },
   "peerDependencies": {
     "svelte": "^4.0.0 || ^5.0.0"

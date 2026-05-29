@@ -1,6 +1,6 @@
 {
   "name": "@adsterra-ad/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -15,6 +15,15 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SawLay043/adsterra-ads.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/SawLay043/adsterra-ads",
+  "bugs": {
+    "url": "https://github.com/SawLay043/adsterra-ads/issues"
+  },
   "publishConfig": {
     "access": "public"
   },
