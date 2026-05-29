@@ -16,6 +16,8 @@
     "dev:svelte": "npm run dev -w example-sveltekit",
     "dev:react:full": "npm run build && npm run dev:react",
     "dev:vue:full": "npm run build && npm run dev:vue",
-    "dev:svelte:full": "npm run build && npm run dev:svelte"
+    "dev:svelte:full": "npm run build && npm run dev:svelte",
+    "publish:dry-run": "npm run build && npm run typecheck && npm publish --access public --dry-run -w @adsterra-ad/core && npm publish --access public --dry-run -w @adsterra-ad/react && npm publish --access public --dry-run -w @adsterra-ad/vue && npm publish --access public --dry-run -w @adsterra-ad/svelte",
+    "publish:all": "npm publish --access public -w @adsterra-ad/core && npm publish --access public -w @adsterra-ad/react && npm publish --access public -w @adsterra-ad/vue && npm publish --access public -w @adsterra-ad/svelte"
   }
 }

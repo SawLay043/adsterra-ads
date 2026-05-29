@@ -11,6 +11,13 @@
       "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@adsterra-ad/core": "0.1.0"
   },
@@ -19,7 +26,8 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run typecheck"
   },
   "devDependencies": {
     "tsup": "^8.2.4",

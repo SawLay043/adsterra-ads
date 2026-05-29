@@ -138,6 +138,16 @@ npm run dev:vue
 npm run dev:svelte
 ```
 
+## Publish To npm
+
+```bash
+npm login
+npm run publish:dry-run
+npm run publish:all
+```
+
+Publish order is handled in scripts: `core` -> `react` -> `vue` -> `svelte`.
+
 ## Notes
 
 - Preferred: call `configureAds({ ... })` once at app startup.
