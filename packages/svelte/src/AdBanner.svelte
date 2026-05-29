@@ -6,6 +6,14 @@
   export let provider: AdProvider = 'adsterra';
   export let className = '';
   export let adLabel = 'Advertisement';
+  export let showAdLabel = true;
+  export let adLabelPosition:
+    | 'top-left'
+    | 'top-center'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-center'
+    | 'bottom-right' = 'top-left';
   export let onLoad: (() => void) | undefined = undefined;
   export let onError: (() => void) | undefined = undefined;
 
@@ -18,8 +26,19 @@
   $: config = DEFAULT_AD_CONFIGS[format];
   $: iframeSrcDoc = buildSrcDoc({ format, provider: activeProvider, config, bannerId });
 
+  $: wrapperStyle = `display:inline-flex;flex-direction:column;align-items:${adLabelPosition.endsWith('left') ? 'flex-start' : adLabelPosition.endsWith('right') ? 'flex-end' : 'center'};`;
+  $: topLabel = showAdLabel && adLabelPosition.startsWith('top');
+  $: bottomLabel = showAdLabel && adLabelPosition.startsWith('bottom');
+  $: labelSpacing = topLabel ? 'margin-bottom:4px;' : bottomLabel ? 'margin-top:4px;' : '';
+  $: labelAlign = `text-align:${adLabelPosition.endsWith('left') ? 'left' : adLabelPosition.endsWith('right') ? 'right' : 'center'};width:100%;`;
+
   let config = DEFAULT_AD_CONFIGS[format];
   let iframeSrcDoc = '';
+  let wrapperStyle = '';
+  let topLabel = false;
+  let bottomLabel = false;
+  let labelSpacing = '';
+  let labelAlign = '';
 
   const handleMessage = (event: MessageEvent<BannerMessage>) => {
     const data = event.data;
@@ -44,8 +63,10 @@
 </script>
 
 {#if !adFailed}
-  <div class="{className} {adLoaded ? 'scale-100 opacity-100' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0'}">
-    <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;">{adLabel}</span>
+  <div class="{className} {adLoaded ? 'scale-100 opacity-100' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0'}" style={wrapperStyle}>
+    {#if topLabel}
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;{labelSpacing}{labelAlign}">{adLabel}</span>
+    {/if}
     <div
       data-testid="ad-banner"
       style="width:{typeof config.width === 'number' ? `${config.width}px` : config.width};height:{typeof config.height === 'number' ? `${config.height}px` : config.height};overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;background:#f3f4f6;display:flex;align-items:center;justify-content:center;"
@@ -58,5 +79,8 @@
         sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals"
       ></iframe>
     </div>
+    {#if bottomLabel}
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;{labelSpacing}{labelAlign}">{adLabel}</span>
+    {/if}
   </div>
 {/if}

@@ -9,16 +9,35 @@ import {
   type BannerMessage
 } from '@adsterra-ad/core';
 
+export type AdLabelPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right';
+
 export interface AdBannerProps {
   format: AdFormat;
   provider?: AdProvider;
   className?: string;
   adLabel?: string;
+  showAdLabel?: boolean;
+  adLabelPosition?: AdLabelPosition;
   onLoad?: () => void;
   onError?: () => void;
 }
 
-export function AdBanner({ format, provider = 'adsterra', className, adLabel = 'Advertisement', onLoad, onError }: AdBannerProps) {
+export function AdBanner({
+  format,
+  provider = 'adsterra',
+  className,
+  adLabel = 'Advertisement',
+  showAdLabel = true,
+  adLabelPosition = 'top-left',
+  onLoad,
+  onError
+}: AdBannerProps) {
   const bannerId = useRef(createBannerId());
   const [activeProvider, setActiveProvider] = useState<AdProvider>(provider);
   const [adLoaded, setAdLoaded] = useState(false);
@@ -53,12 +72,12 @@ export function AdBanner({ format, provider = 'adsterra', className, adLabel = '
   if (adFailed) return null;
 
   const hiddenClass = adLoaded ? 'scale-100 opacity-100' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0';
+  const wrapperStyle = getWrapperStyle(adLabelPosition);
+  const labelStyle = getLabelStyle(adLabelPosition);
 
   return (
-    <div className={`${className ?? ''} ${hiddenClass}`.trim()}>
-      <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9ca3af' }}>
-        {adLabel}
-      </span>
+    <div className={`${className ?? ''} ${hiddenClass}`.trim()} style={wrapperStyle}>
+      {showAdLabel && adLabelPosition.startsWith('top') ? <span style={labelStyle}>{adLabel}</span> : null}
       <div data-testid="ad-banner" style={{ ...parseStyle(getBannerStyle(config)), overflow: 'hidden', borderRadius: 6, border: '1px solid #e5e7eb', background: '#f3f4f6' }}>
         <iframe
           title="Advertisement"
@@ -70,6 +89,7 @@ export function AdBanner({ format, provider = 'adsterra', className, adLabel = '
           sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals"
         />
       </div>
+      {showAdLabel && adLabelPosition.startsWith('bottom') ? <span style={labelStyle}>{adLabel}</span> : null}
     </div>
   );
 }
@@ -78,7 +98,15 @@ export interface AdContainerProps extends Omit<AdBannerProps, 'onLoad' | 'onErro
   containerClassName?: string;
 }
 
-export function AdContainer({ format, provider = 'adsterra', className, adLabel, containerClassName }: AdContainerProps) {
+export function AdContainer({
+  format,
+  provider = 'adsterra',
+  className,
+  adLabel,
+  showAdLabel,
+  adLabelPosition,
+  containerClassName
+}: AdContainerProps) {
   const [adLoaded, setAdLoaded] = useState(false);
   const [adFailed, setAdFailed] = useState(false);
 
@@ -93,6 +121,8 @@ export function AdContainer({ format, provider = 'adsterra', className, adLabel,
         provider={provider}
         className={className}
         adLabel={adLabel}
+        showAdLabel={showAdLabel}
+        adLabelPosition={adLabelPosition}
         onLoad={() => setAdLoaded(true)}
         onError={() => setAdFailed(true)}
       />
@@ -109,6 +139,28 @@ function parseStyle(styleString: string): React.CSSProperties {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
+  };
+}
+
+function getWrapperStyle(position: AdLabelPosition): React.CSSProperties {
+  return {
+    display: 'inline-flex',
+    flexDirection: 'column',
+    alignItems: position.endsWith('left') ? 'flex-start' : position.endsWith('right') ? 'flex-end' : 'center'
+  };
+}
+
+function getLabelStyle(position: AdLabelPosition): React.CSSProperties {
+  return {
+    fontSize: 10,
+    fontWeight: 600,
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase',
+    color: '#9ca3af',
+    marginBottom: position.startsWith('top') ? 4 : 0,
+    marginTop: position.startsWith('bottom') ? 4 : 0,
+    textAlign: position.endsWith('left') ? 'left' : position.endsWith('right') ? 'right' : 'center',
+    width: '100%'
   };
 }
 

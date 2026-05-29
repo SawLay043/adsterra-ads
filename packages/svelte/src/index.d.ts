@@ -1,11 +1,21 @@
 import type { Component } from 'svelte';
 import type { AdFormat, AdProvider } from '@adsterra-ad/core';
 
+export type AdLabelPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right';
+
 export interface AdBannerProps {
   format: AdFormat;
   provider?: AdProvider;
   className?: string;
   adLabel?: string;
+  showAdLabel?: boolean;
+  adLabelPosition?: AdLabelPosition;
   onLoad?: () => void;
   onError?: () => void;
 }
@@ -15,6 +25,8 @@ export interface AdContainerProps {
   provider?: AdProvider;
   className?: string;
   adLabel?: string;
+  showAdLabel?: boolean;
+  adLabelPosition?: AdLabelPosition;
 }
 
 export interface SocialBarProps {

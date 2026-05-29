@@ -8,12 +8,22 @@ import {
   type BannerMessage
 } from '@adsterra-ad/core';
 
+type AdLabelPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right';
+
 export const AdBanner = defineComponent({
   name: 'AdBanner',
   props: {
     format: { type: String as PropType<AdFormat>, required: true },
     provider: { type: String as PropType<AdProvider>, default: 'adsterra' },
     adLabel: { type: String, default: 'Advertisement' },
+    showAdLabel: { type: Boolean, default: true },
+    adLabelPosition: { type: String as PropType<AdLabelPosition>, default: 'top-left' },
     className: { type: String, default: '' }
   },
   emits: ['load', 'error'],
@@ -42,6 +52,24 @@ export const AdBanner = defineComponent({
       justifyContent: 'center'
     }));
 
+    const wrapperStyle = computed(() => ({
+      display: 'inline-flex',
+      flexDirection: 'column',
+      alignItems: props.adLabelPosition.endsWith('left') ? 'flex-start' : props.adLabelPosition.endsWith('right') ? 'flex-end' : 'center'
+    }));
+
+    const labelStyle = computed(() => ({
+      fontSize: '10px',
+      fontWeight: '600',
+      letterSpacing: '0.1em',
+      textTransform: 'uppercase',
+      color: '#9ca3af',
+      marginBottom: props.adLabelPosition.startsWith('top') ? '4px' : '0',
+      marginTop: props.adLabelPosition.startsWith('bottom') ? '4px' : '0',
+      textAlign: props.adLabelPosition.endsWith('left') ? 'left' : props.adLabelPosition.endsWith('right') ? 'right' : 'center',
+      width: '100%'
+    }));
+
     const onMessage = (event: MessageEvent<BannerMessage>) => {
       const data = event.data;
       if (!data || data.bannerId !== bannerId) return;
@@ -62,8 +90,11 @@ export const AdBanner = defineComponent({
     return () => {
       if (adFailed.value) return null;
       const hiddenClass = adLoaded.value ? 'scale-100 opacity-100' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0';
-      return h('div', { class: `${props.className} ${hiddenClass}`.trim() }, [
-        h('span', { style: { fontSize: '10px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9ca3af' } }, props.adLabel),
+      const topLabel = props.showAdLabel && props.adLabelPosition.startsWith('top');
+      const bottomLabel = props.showAdLabel && props.adLabelPosition.startsWith('bottom');
+
+      return h('div', { class: `${props.className} ${hiddenClass}`.trim(), style: wrapperStyle.value }, [
+        topLabel ? h('span', { style: labelStyle.value }, props.adLabel) : null,
         h('div', { 'data-testid': 'ad-banner', style: style.value }, [
           h('iframe', {
             title: 'Advertisement',
@@ -72,7 +103,8 @@ export const AdBanner = defineComponent({
             scrolling: 'no',
             sandbox: 'allow-scripts allow-forms allow-same-origin allow-popups allow-modals'
           })
-        ])
+        ]),
+        bottomLabel ? h('span', { style: labelStyle.value }, props.adLabel) : null
       ]);
     };
   }
@@ -84,7 +116,9 @@ export const AdContainer = defineComponent({
     format: { type: String as PropType<AdFormat>, required: true },
     provider: { type: String as PropType<AdProvider>, default: 'adsterra' },
     className: { type: String, default: '' },
-    adLabel: { type: String, default: 'Advertisement' }
+    adLabel: { type: String, default: 'Advertisement' },
+    showAdLabel: { type: Boolean, default: true },
+    adLabelPosition: { type: String as PropType<AdLabelPosition>, default: 'top-left' }
   },
   setup(props) {
     const adLoaded = ref(false);
@@ -99,6 +133,8 @@ export const AdContainer = defineComponent({
           provider: props.provider,
           className: props.className,
           adLabel: props.adLabel,
+          showAdLabel: props.showAdLabel,
+          adLabelPosition: props.adLabelPosition,
           onLoad: () => { adLoaded.value = true; },
           onError: () => { adFailed.value = true; }
         })
