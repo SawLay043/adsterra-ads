@@ -71,12 +71,12 @@ export function AdBanner({
 
   if (adFailed) return null;
 
-  const hiddenClass = adLoaded ? 'scale-100 opacity-100' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0';
   const wrapperStyle = getWrapperStyle(adLabelPosition);
   const labelStyle = getLabelStyle(adLabelPosition);
+  const visibilityStyle = getVisibilityStyle(adLoaded);
 
   return (
-    <div className={`${className ?? ''} ${hiddenClass}`.trim()} style={wrapperStyle}>
+    <div className={`${className ?? ''}`.trim()} style={{ ...wrapperStyle, ...visibilityStyle }}>
       {showAdLabel && adLabelPosition.startsWith('top') ? <span style={labelStyle}>{adLabel}</span> : null}
       <div data-testid="ad-banner" style={{ ...parseStyle(getBannerStyle(config)), overflow: 'hidden', borderRadius: 6, border: '1px solid #e5e7eb', background: '#f3f4f6' }}>
         <iframe
@@ -112,10 +112,10 @@ export function AdContainer({
 
   if (adFailed) return null;
 
-  const hiddenClass = adLoaded ? '' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0';
+  const visibilityStyle = getVisibilityStyle(adLoaded);
 
   return (
-    <div className={`${containerClassName ?? ''} ${hiddenClass}`.trim()}>
+    <div className={`${containerClassName ?? ''}`.trim()} style={visibilityStyle}>
       <AdBanner
         format={format}
         provider={provider}
@@ -161,6 +161,19 @@ function getLabelStyle(position: AdLabelPosition): React.CSSProperties {
     marginTop: position.startsWith('bottom') ? 4 : 0,
     textAlign: position.endsWith('left') ? 'left' : position.endsWith('right') ? 'right' : 'center',
     width: '100%'
+  };
+}
+
+function getVisibilityStyle(isVisible: boolean): React.CSSProperties {
+  if (isVisible) return { opacity: 1, transform: 'scale(1)' };
+  return {
+    opacity: 0,
+    transform: 'scale(0.95)',
+    pointerEvents: 'none',
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    overflow: 'hidden'
   };
 }
 

@@ -69,6 +69,19 @@ export const AdBanner = defineComponent({
       textAlign: props.adLabelPosition.endsWith('left') ? 'left' : props.adLabelPosition.endsWith('right') ? 'right' : 'center',
       width: '100%'
     }));
+    const visibilityStyle = computed(() =>
+      adLoaded.value
+        ? { opacity: '1', transform: 'scale(1)' }
+        : {
+            opacity: '0',
+            transform: 'scale(0.95)',
+            pointerEvents: 'none',
+            position: 'absolute',
+            width: '0',
+            height: '0',
+            overflow: 'hidden'
+          }
+    );
 
     const onMessage = (event: MessageEvent<BannerMessage>) => {
       const data = event.data;
@@ -89,11 +102,10 @@ export const AdBanner = defineComponent({
 
     return () => {
       if (adFailed.value) return null;
-      const hiddenClass = adLoaded.value ? 'scale-100 opacity-100' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0';
       const topLabel = props.showAdLabel && props.adLabelPosition.startsWith('top');
       const bottomLabel = props.showAdLabel && props.adLabelPosition.startsWith('bottom');
 
-      return h('div', { class: `${props.className} ${hiddenClass}`.trim(), style: wrapperStyle.value }, [
+      return h('div', { class: props.className, style: { ...wrapperStyle.value, ...visibilityStyle.value } }, [
         topLabel ? h('span', { style: labelStyle.value }, props.adLabel) : null,
         h('div', { 'data-testid': 'ad-banner', style: style.value }, [
           h('iframe', {
@@ -126,8 +138,18 @@ export const AdContainer = defineComponent({
 
     return () => {
       if (adFailed.value) return null;
-      const hiddenClass = adLoaded.value ? '' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0';
-      return h('div', { class: hiddenClass }, [
+      const containerVisibilityStyle = adLoaded.value
+        ? { opacity: '1', transform: 'scale(1)' }
+        : {
+            opacity: '0',
+            transform: 'scale(0.95)',
+            pointerEvents: 'none',
+            position: 'absolute',
+            width: '0',
+            height: '0',
+            overflow: 'hidden'
+          };
+      return h('div', { style: containerVisibilityStyle }, [
         h(AdBanner, {
           format: props.format,
           provider: props.provider,

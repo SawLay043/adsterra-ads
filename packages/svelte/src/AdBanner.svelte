@@ -22,6 +22,15 @@
   let adLoaded = false;
   let adFailed = false;
 
+  let config = DEFAULT_AD_CONFIGS[format];
+  let iframeSrcDoc = '';
+  let wrapperStyle = '';
+  let topLabel = false;
+  let bottomLabel = false;
+  let labelSpacing = '';
+  let labelAlign = '';
+  let visibilityStyle = '';
+
   $: if (provider !== activeProvider) activeProvider = provider;
   $: config = DEFAULT_AD_CONFIGS[format];
   $: iframeSrcDoc = buildSrcDoc({ format, provider: activeProvider, config, bannerId });
@@ -31,14 +40,9 @@
   $: bottomLabel = showAdLabel && adLabelPosition.startsWith('bottom');
   $: labelSpacing = topLabel ? 'margin-bottom:4px;' : bottomLabel ? 'margin-top:4px;' : '';
   $: labelAlign = `text-align:${adLabelPosition.endsWith('left') ? 'left' : adLabelPosition.endsWith('right') ? 'right' : 'center'};width:100%;`;
-
-  let config = DEFAULT_AD_CONFIGS[format];
-  let iframeSrcDoc = '';
-  let wrapperStyle = '';
-  let topLabel = false;
-  let bottomLabel = false;
-  let labelSpacing = '';
-  let labelAlign = '';
+  $: visibilityStyle = adLoaded
+    ? 'opacity:1;transform:scale(1);'
+    : 'opacity:0;transform:scale(0.95);pointer-events:none;position:absolute;width:0;height:0;overflow:hidden;';
 
   const handleMessage = (event: MessageEvent<BannerMessage>) => {
     const data = event.data;
@@ -63,7 +67,7 @@
 </script>
 
 {#if !adFailed}
-  <div class="{className} {adLoaded ? 'scale-100 opacity-100' : 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0'}" style={wrapperStyle}>
+  <div class="{className}" style="{wrapperStyle}{visibilityStyle}">
     {#if topLabel}
       <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;{labelSpacing}{labelAlign}">{adLabel}</span>
     {/if}

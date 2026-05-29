@@ -17,10 +17,15 @@
 
   let adLoaded = false;
   let adFailed = false;
+  let visibilityStyle = '';
+
+  $: visibilityStyle = adLoaded
+    ? 'opacity:1;transform:scale(1);'
+    : 'opacity:0;transform:scale(0.95);pointer-events:none;position:absolute;width:0;height:0;overflow:hidden;';
 </script>
 
 {#if !adFailed}
-  <div class="{!adLoaded ? 'pointer-events-none absolute h-0 w-0 scale-95 overflow-hidden opacity-0' : ''}">
+  <div style={visibilityStyle}>
     <AdBanner
       {format}
       {provider}
