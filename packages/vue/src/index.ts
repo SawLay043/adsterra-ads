@@ -3,7 +3,6 @@ import {
   DEFAULT_AD_CONFIGS,
   buildSrcDoc,
   createBannerId,
-  shouldFallback,
   type AdFormat,
   type AdProvider,
   type BannerMessage
@@ -52,10 +51,6 @@ export const AdBanner = defineComponent({
         return;
       }
       if (data.type === 'ad-load-error') {
-        if (shouldFallback(activeProvider.value, props.format, data)) {
-          activeProvider.value = 'hilltopads';
-          return;
-        }
         adFailed.value = true;
         emit('error');
       }

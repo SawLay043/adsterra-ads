@@ -35,7 +35,9 @@ export function getBannerStyle(config: AdConfig): string {
 }
 
 export function shouldFallback(provider: AdProvider, format: AdFormat, msg: BannerMessage): boolean {
-  return provider === 'adsterra' && format === '300x250' && msg.type === 'ad-load-error';
+  // Automatic provider fallback is intentionally disabled.
+  // Consumers can still choose provider="hilltopads" explicitly.
+  return false;
 }
 
 function reporterScript({ bannerId, format, provider }: { bannerId: string; format: AdFormat; provider: AdProvider }): string {

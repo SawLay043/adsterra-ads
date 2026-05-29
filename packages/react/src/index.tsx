@@ -4,7 +4,6 @@ import {
   buildSrcDoc,
   createBannerId,
   getBannerStyle,
-  shouldFallback,
   type AdFormat,
   type AdProvider,
   type BannerMessage
@@ -43,17 +42,13 @@ export function AdBanner({ format, provider = 'adsterra', className, adLabel = '
         return;
       }
       if (data.type === 'ad-load-error') {
-        if (shouldFallback(activeProvider, format, data)) {
-          setActiveProvider('hilltopads');
-          return;
-        }
         setAdFailed(true);
         onError?.();
       }
     };
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
-  }, [activeProvider, format, onLoad, onError]);
+  }, [onLoad, onError]);
 
   if (adFailed) return null;
 

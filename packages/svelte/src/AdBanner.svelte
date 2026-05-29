@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { DEFAULT_AD_CONFIGS, buildSrcDoc, createBannerId, shouldFallback, type AdFormat, type AdProvider, type BannerMessage } from '@adsterra-ad/core';
+  import { DEFAULT_AD_CONFIGS, buildSrcDoc, createBannerId, type AdFormat, type AdProvider, type BannerMessage } from '@adsterra-ad/core';
 
   export let format: AdFormat;
   export let provider: AdProvider = 'adsterra';
@@ -32,10 +32,6 @@
     }
 
     if (data.type === 'ad-load-error') {
-      if (shouldFallback(activeProvider, format, data)) {
-        activeProvider = 'hilltopads';
-        return;
-      }
       adFailed = true;
       onError?.();
     }
