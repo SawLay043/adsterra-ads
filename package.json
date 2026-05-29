@@ -1,0 +1,14 @@
+{
+  "name": "adsterra-ad-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Framework-agnostic ad components with React, Vue, and Svelte adapters.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @adsterra-ad/core && npm run build -w @adsterra-ad/react && npm run build -w @adsterra-ad/vue && npm run build -w @adsterra-ad/svelte",
+    "typecheck": "npm run typecheck -w @adsterra-ad/core && npm run typecheck -w @adsterra-ad/react && npm run typecheck -w @adsterra-ad/vue && npm run typecheck -w @adsterra-ad/svelte"
+  }
+}
