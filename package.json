@@ -5,10 +5,17 @@
   "description": "Framework-agnostic ad components with React, Vue, and Svelte adapters.",
   "license": "MIT",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "scripts": {
     "build": "npm run build -w @adsterra-ad/core && npm run build -w @adsterra-ad/react && npm run build -w @adsterra-ad/vue && npm run build -w @adsterra-ad/svelte",
-    "typecheck": "npm run typecheck -w @adsterra-ad/core && npm run typecheck -w @adsterra-ad/react && npm run typecheck -w @adsterra-ad/vue && npm run typecheck -w @adsterra-ad/svelte"
+    "typecheck": "npm run typecheck -w @adsterra-ad/core && npm run typecheck -w @adsterra-ad/react && npm run typecheck -w @adsterra-ad/vue && npm run typecheck -w @adsterra-ad/svelte",
+    "dev:react": "npm run dev -w example-react-vite",
+    "dev:vue": "npm run dev -w example-vue-vite",
+    "dev:svelte": "npm run dev -w example-sveltekit",
+    "dev:react:full": "npm run build && npm run dev:react",
+    "dev:vue:full": "npm run build && npm run dev:vue",
+    "dev:svelte:full": "npm run build && npm run dev:svelte"
   }
 }
