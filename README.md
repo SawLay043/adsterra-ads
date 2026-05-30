@@ -109,7 +109,7 @@ configureAds({
 
 ## Props
 
-- `format`: `'300x250' | '160x300' | '728x90' | '320x50' | '160x600' | 'native'`
+- `format`: `'300x250' | '160x300' | '728x90' | '468x60' | '320x50' | '160x600' | 'native'`
 - `provider?`: `'adsterra'`
 - `adKey?`: `string` (optional per-component key override)
 - `adLabel?`: `string`

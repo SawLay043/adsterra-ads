@@ -1,4 +1,4 @@
-export type AdFormat = '300x250' | '160x300' | '728x90' | '320x50' | '160x600' | 'native';
+export type AdFormat = '300x250' | '160x300' | '728x90' | '468x60' | '320x50' | '160x600' | 'native';
 export type AdProvider = 'adsterra' | 'hilltopads';
 
 export interface AdConfig {
@@ -25,6 +25,7 @@ export const DEFAULT_AD_CONFIGS: Record<AdFormat, AdConfig> = {
   '300x250': { key: 'a63df507acd2eab9674d17bcafcb2514', width: 300, height: 250 },
   '160x300': { key: '83f5b4a71b8b75054de5c9410db5ec31', width: 160, height: 300 },
   '728x90': { key: '608c40ac4f99ec5b1f15de546417ccba', width: 728, height: 90 },
+  '468x60': { key: 'c85b776db3a5e6ded7f73f9f205dda69', width: 468, height: 60 },
   '320x50': { key: '8d6509c38d17a8bb29933c4ef9cd4327', width: 320, height: 50 },
   '160x600': { key: 'b609dd6697e15c82d9600af75401fbcc', width: 160, height: 600 },
   native: { key: 'a03627a5221f2054c614d3cc3e9ab09c', width: '100%', height: 'auto' }
