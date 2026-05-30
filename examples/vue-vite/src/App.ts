@@ -9,11 +9,15 @@ type AdLabelPosition =
   | 'bottom-center'
   | 'bottom-right';
 
+type AdFormat = '300x250' | '160x300' | '728x90' | '468x60' | '320x50' | '160x600' | 'native';
+
 type DemoItem =
   | { title: string; props: { adLabelPosition: AdLabelPosition } }
   | { title: string; props: { showAdLabel: false } };
 
 const adKey = 'YOUR_ADSTERRA_KEY';
+
+const formats: AdFormat[] = ['300x250', '160x300', '728x90', '468x60', '320x50', '160x600', 'native'];
 
 const demoItems: DemoItem[] = [
   { title: 'Top Left', props: { adLabelPosition: 'top-left' } },
@@ -28,17 +32,34 @@ const demoItems: DemoItem[] = [
 export default defineComponent({
   name: 'App',
   setup() {
-    return () => h('main', { class: 'page' }, [
-      h('h1', 'Vue Example'),
-      h('p', 'Testing every label option for @adsterra-ad/vue.'),
-      h('section', { class: 'grid' },
-        demoItems.map((item) =>
-          h('article', { class: 'card', key: item.title }, [
-            h('h3', item.title),
-            h(AdBanner, { format: '300x250', adKey, ...item.props })
-          ])
+    return () =>
+      h('main', { class: 'page' }, [
+        h('h1', 'Vue Example'),
+        h('p', 'Testing label options and all ad formats for @adsterra-ad/vue.'),
+
+        h('h2', 'Label Positions'),
+        h(
+          'section',
+          { class: 'grid' },
+          demoItems.map((item) =>
+            h('article', { class: 'card', key: item.title }, [
+              h('h3', item.title),
+              h(AdBanner, { format: '300x250', adKey, ...item.props })
+            ])
+          )
+        ),
+
+        h('h2', 'All Formats'),
+        h(
+          'section',
+          { class: 'grid' },
+          formats.map((format) =>
+            h('article', { class: 'card', key: format }, [
+              h('h3', format),
+              h(AdBanner, { format, adKey, adLabelPosition: 'top-center' })
+            ])
+          )
         )
-      )
-    ]);
+      ]);
   }
 });

@@ -9,11 +9,15 @@
     | 'bottom-center'
     | 'bottom-right';
 
+  type AdFormat = '300x250' | '160x300' | '728x90' | '468x60' | '320x50' | '160x600' | 'native';
+
   type DemoItem =
     | { title: string; props: { adLabelPosition: AdLabelPosition } }
     | { title: string; props: { showAdLabel: false } };
 
   const adKey = 'YOUR_ADSTERRA_KEY';
+
+  const formats: AdFormat[] = ['300x250', '160x300', '728x90', '468x60', '320x50', '160x600', 'native'];
 
   const demoItems: DemoItem[] = [
     { title: 'Top Left', props: { adLabelPosition: 'top-left' } },
@@ -28,12 +32,24 @@
 
 <main class="page">
   <h1>SvelteKit Example</h1>
-  <p>Testing every label option for @adsterra-ad/svelte.</p>
+  <p>Testing label options and all ad formats for @adsterra-ad/svelte.</p>
+
+  <h2>Label Positions</h2>
   <section class="grid">
     {#each demoItems as item}
       <article class="card">
         <h3>{item.title}</h3>
         <AdBanner format="300x250" adKey={adKey} {...item.props} />
+      </article>
+    {/each}
+  </section>
+
+  <h2>All Formats</h2>
+  <section class="grid">
+    {#each formats as format}
+      <article class="card">
+        <h3>{format}</h3>
+        <AdBanner {format} adKey={adKey} adLabelPosition="top-center" />
       </article>
     {/each}
   </section>
