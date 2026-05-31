@@ -33,7 +33,7 @@ export default function App() {
         {demoItems.map((item) => (
           <article key={item.title} className="card">
             <h3>{item.title}</h3>
-            <AdBanner format="300x250" adKey={adKey} {...item.props} />
+            <AdBanner format="300x250" adKey={adKey} {...item.props} showFallbackPlaceholder={true} />
           </article>
         ))}
       </section>

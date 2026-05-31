@@ -44,7 +44,7 @@ export default defineComponent({
           demoItems.map((item) =>
             h('article', { class: 'card', key: item.title }, [
               h('h3', item.title),
-              h(AdBanner, { format: '300x250', adKey, ...item.props })
+              h(AdBanner, { format: '300x250', adKey, ...item.props, showFallbackPlaceholder: true })
             ])
           )
         ),
