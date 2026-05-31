@@ -57,7 +57,7 @@
     {#each formats as format}
       <article class="card">
         <h3>{format}</h3>
-        <AdBanner {format} adLabelPosition="top-center" />
+        <AdBanner {format} adLabelPosition="top-center" showFallbackPlaceholder={true} />
       </article>
     {/each}
   </section>

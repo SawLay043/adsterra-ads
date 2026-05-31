@@ -64,7 +64,7 @@ export default defineComponent({
           formats.map((format) =>
             h('article', { class: 'card', key: format }, [
               h('h3', format),
-              h(AdBanner, { format, adLabelPosition: 'top-center' })
+              h(AdBanner, { format, adLabelPosition: 'top-center', showFallbackPlaceholder: true })
             ])
           )
         )

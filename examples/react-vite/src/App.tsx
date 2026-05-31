@@ -51,7 +51,7 @@ export default function App() {
         {formats.map((format) => (
           <article key={format} className="card">
             <h3>{format}</h3>
-            <AdBanner format={format} adLabelPosition="top-center" />
+            <AdBanner format={format} adLabelPosition="top-center" showFallbackPlaceholder />
           </article>
         ))}
       </section>

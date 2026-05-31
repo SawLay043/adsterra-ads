@@ -2,6 +2,8 @@
 
 Framework-ready ad components for Adsterra with adapters for React, Vue, and Svelte.
 
+This is a community project. It is not affiliated with, endorsed by, sponsored by, or officially associated with Adsterra.
+
 ## Install
 
 ### Option A: npm package (recommended)
