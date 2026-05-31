@@ -1,6 +1,6 @@
 {
   "name": "@adsterra-ad/vue",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -31,7 +31,7 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
-    "@adsterra-ad/core": "0.1.2"
+    "@adsterra-ad/core": "0.1.3"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",

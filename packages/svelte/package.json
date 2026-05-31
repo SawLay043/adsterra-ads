@@ -1,6 +1,6 @@
 {
   "name": "@adsterra-ad/svelte",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "svelte": "src/index.ts",
   "types": "src/index.d.ts",
@@ -28,7 +28,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@adsterra-ad/core": "0.1.2"
+    "@adsterra-ad/core": "0.1.3"
   },
   "peerDependencies": {
     "svelte": "^4.0.0 || ^5.0.0"

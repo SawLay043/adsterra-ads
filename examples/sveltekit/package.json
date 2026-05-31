@@ -1,7 +1,7 @@
 {
   "name": "example-sveltekit",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.3",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@adsterra-ad/svelte": "0.1.0",
+    "@adsterra-ad/svelte": "0.1.3",
     "@sveltejs/kit": "^2.5.18",
     "svelte": "^5.0.0"
   },
