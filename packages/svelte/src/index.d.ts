@@ -1,5 +1,6 @@
 import type { Component } from 'svelte';
 import type { AdFormat, AdProvider } from '@adsterra-ad/core';
+export { configureAds } from '@adsterra-ad/core';
 
 export type AdLabelPosition =
   | 'top-left'

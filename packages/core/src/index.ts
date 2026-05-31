@@ -1,5 +1,5 @@
 export type AdFormat = '300x250' | '160x300' | '728x90' | '468x60' | '320x50' | '160x600' | 'native';
-export type AdProvider = 'adsterra' | 'hilltopads';
+export type AdProvider = 'adsterra';
 
 export interface AdConfig {
   key: string;
@@ -53,7 +53,6 @@ export function getBannerStyle(config: AdConfig): string {
 
 export function shouldFallback(provider: AdProvider, format: AdFormat, msg: BannerMessage): boolean {
   // Automatic provider fallback is intentionally disabled.
-  // Consumers can still choose provider="hilltopads" explicitly.
   return false;
 }
 
@@ -109,14 +108,6 @@ export function buildSrcDoc(params: {
   const { format, provider, config, bannerId } = params;
   const sOpen = '<' + 'script';
   const sClose = '<' + '/script' + '>';
-
-  if (provider === 'hilltopads' && format === '300x250') {
-    return `
-<html style="${getSlotStyle(config)}"><head>${reporterScript({ bannerId, format, provider })}</head>
-<body style="${getAdDocumentStyle(config)}">
-${sOpen}> (function(adcms){ var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1]; s.settings = adcms || {}; s.src = "//untimely-hello.com/bkX.VfsldRG/l/0/YEWWcc/ueMm-9XujZsUYlTkOPmTsY/4cNGTQUPwhN/DvUattNEj/gZ1INTT/Ap0ROBQZ"; s.async = true; s.referrerPolicy = 'no-referrer-when-downgrade'; l.parentNode.insertBefore(s, l); })({}) ${sClose}
-</body></html>`;
-  }
 
   if (format === 'native') {
     return `
