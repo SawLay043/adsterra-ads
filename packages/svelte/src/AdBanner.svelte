@@ -79,9 +79,12 @@
       <iframe
         title="Advertisement"
         srcdoc={iframeSrcDoc}
+        width="100%"
+        height="100%"
         frameborder="0"
         scrolling="no"
         sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals"
+        style="display:block;width:100%;height:100%;"
       ></iframe>
     </div>
     {#if bottomLabel}

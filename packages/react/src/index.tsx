@@ -87,11 +87,12 @@ export function AdBanner({
         <iframe
           title="Advertisement"
           srcDoc={srcDoc}
-          width={typeof config.width === 'number' ? config.width : undefined}
-          height={typeof config.height === 'number' ? config.height : undefined}
+          width="100%"
+          height="100%"
           frameBorder={0}
           scrolling="no"
           sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals"
+          style={{ display: 'block', width: '100%', height: '100%' }}
         />
       </div>
       {showAdLabel && adLabelPosition.startsWith('bottom') ? <span style={labelStyle}>{adLabel}</span> : null}

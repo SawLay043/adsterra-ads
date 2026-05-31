@@ -115,9 +115,16 @@ export const AdBanner = defineComponent({
           h('iframe', {
             title: 'Advertisement',
             srcdoc: srcDoc.value,
+            width: '100%',
+            height: '100%',
             frameborder: '0',
             scrolling: 'no',
-            sandbox: 'allow-scripts allow-forms allow-same-origin allow-popups allow-modals'
+            sandbox: 'allow-scripts allow-forms allow-same-origin allow-popups allow-modals',
+            style: {
+              display: 'block',
+              width: '100%',
+              height: '100%'
+            }
           })
         ]),
         bottomLabel ? h('span', { style: labelStyle.value }, props.adLabel) : null

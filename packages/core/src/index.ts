@@ -57,6 +57,16 @@ export function shouldFallback(provider: AdProvider, format: AdFormat, msg: Bann
   return false;
 }
 
+function getSlotStyle(config: AdConfig): string {
+  const width = typeof config.width === 'number' ? `${config.width}px` : config.width;
+  const height = typeof config.height === 'number' ? `${config.height}px` : config.height;
+  return `width:${width};height:${height};`;
+}
+
+function getAdDocumentStyle(config: AdConfig): string {
+  return `margin:0;padding:0;overflow:hidden;${getSlotStyle(config)}`;
+}
+
 function reporterScript({ bannerId, format, provider }: { bannerId: string; format: AdFormat; provider: AdProvider }): string {
   const sOpen = '<' + 'script';
   const sClose = '<' + '/script' + '>';
@@ -102,24 +112,24 @@ export function buildSrcDoc(params: {
 
   if (provider === 'hilltopads' && format === '300x250') {
     return `
-<html><head>${reporterScript({ bannerId, format, provider })}</head>
-<body style="margin:0;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;height:100vh;">
+<html style="${getSlotStyle(config)}"><head>${reporterScript({ bannerId, format, provider })}</head>
+<body style="${getAdDocumentStyle(config)}">
 ${sOpen}> (function(adcms){ var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1]; s.settings = adcms || {}; s.src = "//untimely-hello.com/bkX.VfsldRG/l/0/YEWWcc/ueMm-9XujZsUYlTkOPmTsY/4cNGTQUPwhN/DvUattNEj/gZ1INTT/Ap0ROBQZ"; s.async = true; s.referrerPolicy = 'no-referrer-when-downgrade'; l.parentNode.insertBefore(s, l); })({}) ${sClose}
 </body></html>`;
   }
 
   if (format === 'native') {
     return `
-<html><head>${reporterScript({ bannerId, format, provider })}</head>
-<body style="margin:0;padding:0;overflow:hidden;">
+<html style="${getSlotStyle(config)}"><head>${reporterScript({ bannerId, format, provider })}</head>
+<body style="${getAdDocumentStyle(config)}">
 ${sOpen} async="async" data-cfasync="false" src="https://pl28807911.effectivegatecpm.com/${config.key}/invoke.js">${sClose}
 <div id="container-${config.key}"></div>
 </body></html>`;
   }
 
   return `
-<html><head>${reporterScript({ bannerId, format, provider })}</head>
-<body style="margin:0;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;height:100vh;">
+<html style="${getSlotStyle(config)}"><head>${reporterScript({ bannerId, format, provider })}</head>
+<body style="${getAdDocumentStyle(config)}">
 ${sOpen} type="text/javascript">
 atOptions = { 'key': '${config.key}', 'format': 'iframe', 'height': ${config.height}, 'width': ${config.width}, 'params': {} };
 ${sClose}
