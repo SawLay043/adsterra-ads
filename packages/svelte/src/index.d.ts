@@ -23,17 +23,7 @@ export interface AdBannerProps {
   onError?: () => void;
 }
 
-export interface AdContainerProps {
-  format: AdFormat;
-  provider?: AdProvider;
-  adKey?: string;
-  className?: string;
-  adLabel?: string;
-  showAdLabel?: boolean;
-  adLabelPosition?: AdLabelPosition;
-  showFallbackPlaceholder?: boolean;
-  fallbackPlaceholderText?: string;
-}
+export type AdContainerProps = AdBannerProps;
 
 export interface SocialBarProps {
   delayMs?: number;
