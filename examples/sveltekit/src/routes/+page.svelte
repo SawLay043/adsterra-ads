@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AdBanner } from '@adsterra-ad/svelte';
+  import { AdBanner, configureAds } from '@adsterra-ad/svelte';
 
   type AdLabelPosition =
     | 'top-left'
@@ -15,7 +15,15 @@
     | { title: string; props: { adLabelPosition: AdLabelPosition } }
     | { title: string; props: { showAdLabel: false } };
 
-  const adKey = 'YOUR_ADSTERRA_KEY';
+  configureAds({
+    '300x250': 'YOUR_300x250_KEY',
+    '160x300': 'YOUR_160x300_KEY',
+    '728x90': 'YOUR_728x90_KEY',
+    '468x60': 'YOUR_468x60_KEY',
+    '320x50': 'YOUR_320x50_KEY',
+    '160x600': 'YOUR_160x600_KEY',
+    native: 'YOUR_NATIVE_KEY'
+  });
 
   const formats: AdFormat[] = ['300x250', '160x300', '728x90', '468x60', '320x50', '160x600', 'native'];
 
@@ -39,7 +47,7 @@
     {#each demoItems as item}
       <article class="card">
         <h3>{item.title}</h3>
-        <AdBanner format="300x250" adKey={adKey} {...item.props} showFallbackPlaceholder={true} />
+        <AdBanner format="300x250" {...item.props} showFallbackPlaceholder={true} />
       </article>
     {/each}
   </section>
@@ -49,7 +57,7 @@
     {#each formats as format}
       <article class="card">
         <h3>{format}</h3>
-        <AdBanner {format} adKey={adKey} adLabelPosition="top-center" />
+        <AdBanner {format} adLabelPosition="top-center" />
       </article>
     {/each}
   </section>

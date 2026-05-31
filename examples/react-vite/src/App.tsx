@@ -1,6 +1,14 @@
-import { AdBanner } from '@adsterra-ad/react';
+import { AdBanner, configureAds } from '@adsterra-ad/react';
 
-const adKey = 'YOUR_ADSTERRA_KEY';
+configureAds({
+  '300x250': 'YOUR_300x250_KEY',
+  '160x300': 'YOUR_160x300_KEY',
+  '728x90': 'YOUR_728x90_KEY',
+  '468x60': 'YOUR_468x60_KEY',
+  '320x50': 'YOUR_320x50_KEY',
+  '160x600': 'YOUR_160x600_KEY',
+  native: 'YOUR_NATIVE_KEY'
+});
 
 const formats = [
   '300x250',
@@ -33,7 +41,7 @@ export default function App() {
         {demoItems.map((item) => (
           <article key={item.title} className="card">
             <h3>{item.title}</h3>
-            <AdBanner format="300x250" adKey={adKey} {...item.props} showFallbackPlaceholder={true} />
+            <AdBanner format="300x250" {...item.props} showFallbackPlaceholder={true} />
           </article>
         ))}
       </section>
@@ -43,7 +51,7 @@ export default function App() {
         {formats.map((format) => (
           <article key={format} className="card">
             <h3>{format}</h3>
-            <AdBanner format={format} adKey={adKey} adLabelPosition="top-center" />
+            <AdBanner format={format} adLabelPosition="top-center" />
           </article>
         ))}
       </section>
