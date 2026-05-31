@@ -39,7 +39,7 @@
     {#each demoItems as item}
       <article class="card">
         <h3>{item.title}</h3>
-        <AdBanner format="300x250" adKey={adKey} {...item.props} />
+        <AdBanner format="300x250" adKey={adKey} {...item.props} showFallbackPlaceholder={true} />
       </article>
     {/each}
   </section>
