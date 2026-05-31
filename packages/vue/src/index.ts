@@ -65,7 +65,8 @@ export const AdBanner = defineComponent({
     const wrapperStyle = computed(() => ({
       display: 'inline-flex',
       flexDirection: 'column',
-      alignItems: props.adLabelPosition.endsWith('left') ? 'flex-start' : props.adLabelPosition.endsWith('right') ? 'flex-end' : 'center'
+      alignItems: 'flex-start',
+      width: typeof config.value.width === 'number' ? `${config.value.width}px` : config.value.width
     }));
 
     const labelStyle = computed(() => ({

@@ -84,7 +84,7 @@ export function AdBanner({
 
   if (adFailed && !showFallbackPlaceholder) return null;
 
-  const wrapperStyle = getWrapperStyle(adLabelPosition);
+  const wrapperStyle = getWrapperStyle(config);
   const labelStyle = getLabelStyle(adLabelPosition);
   const visibilityStyle = getVisibilityStyle(adLoaded || (adFailed && showFallbackPlaceholder));
   const bannerStyle = { ...parseStyle(getBannerStyle(config)), overflow: 'hidden' };
@@ -167,11 +167,12 @@ function parseStyle(styleString: string): React.CSSProperties {
   };
 }
 
-function getWrapperStyle(position: AdLabelPosition): React.CSSProperties {
+function getWrapperStyle(config: { width: number | string }): React.CSSProperties {
   return {
     display: 'inline-flex',
     flexDirection: 'column',
-    alignItems: position.endsWith('left') ? 'flex-start' : position.endsWith('right') ? 'flex-end' : 'center'
+    alignItems: 'flex-start',
+    width: typeof config.width === 'number' ? `${config.width}px` : config.width
   };
 }
 

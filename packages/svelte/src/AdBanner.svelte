@@ -47,7 +47,7 @@
   $: config = resolveAdConfig(format, adKey || undefined);
   $: iframeSrcDoc = buildSrcDoc({ format, provider: activeProvider, config, bannerId });
 
-  $: wrapperStyle = `display:inline-flex;flex-direction:column;align-items:${adLabelPosition.endsWith('left') ? 'flex-start' : adLabelPosition.endsWith('right') ? 'flex-end' : 'center'};`;
+  $: wrapperStyle = `display:inline-flex;flex-direction:column;align-items:flex-start;width:${typeof config.width === 'number' ? `${config.width}px` : config.width};`;
   $: topLabel = showAdLabel && adLabelPosition.startsWith('top');
   $: bottomLabel = showAdLabel && adLabelPosition.startsWith('bottom');
   $: labelSpacing = topLabel ? 'margin-bottom:4px;' : bottomLabel ? 'margin-top:4px;' : '';
