@@ -8,6 +8,8 @@
   export let className = '';
   export let adLabel = 'Advertisement';
   export let showAdLabel = true;
+  export let showFallbackPlaceholder = false;
+  export let fallbackPlaceholderText = 'Test advertisement';
   export let adLabelPosition:
     | 'top-left'
     | 'top-center'
@@ -20,12 +22,12 @@
   let adFailed = false;
   let visibilityStyle = '';
 
-  $: visibilityStyle = adLoaded
+  $: visibilityStyle = adLoaded || (adFailed && showFallbackPlaceholder)
     ? 'opacity:1;transform:scale(1);'
     : 'opacity:0;transform:scale(0.95);pointer-events:none;position:absolute;width:0;height:0;overflow:hidden;';
 </script>
 
-{#if !adFailed}
+{#if !adFailed || showFallbackPlaceholder}
   <div style={visibilityStyle}>
     <AdBanner
       {format}
@@ -34,6 +36,8 @@
       {className}
       {adLabel}
       {showAdLabel}
+      {showFallbackPlaceholder}
+      {fallbackPlaceholderText}
       {adLabelPosition}
       onLoad={() => (adLoaded = true)}
       onError={() => (adFailed = true)}

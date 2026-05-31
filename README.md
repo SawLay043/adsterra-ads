@@ -44,6 +44,7 @@ export default function Page() {
         adLabel="Advertisement"
         showAdLabel={true}
         adLabelPosition="top-center"
+        showFallbackPlaceholder={import.meta.env.DEV}
       />
 
       <AdContainer
@@ -73,6 +74,7 @@ configureAds({
     ad-label="Advertisement"
     :show-ad-label="true"
     ad-label-position="top-center"
+    :show-fallback-placeholder="import.meta.env.DEV"
   />
 
   <AdContainer
@@ -99,6 +101,7 @@ configureAds({
   adLabel="Advertisement"
   showAdLabel={true}
   adLabelPosition="top-center"
+  showFallbackPlaceholder={true}
 />
 
 <AdContainer
@@ -115,6 +118,8 @@ configureAds({
 - `adLabel?`: `string`
 - `showAdLabel?`: `boolean`
 - `adLabelPosition?`: `'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'`
+- `showFallbackPlaceholder?`: `boolean` (shows a local dummy ad when the real ad fails to load; useful for development/testing)
+- `fallbackPlaceholderText?`: `string`
 - `onLoad?`: `() => void`
 - `onError?`: `() => void`
 

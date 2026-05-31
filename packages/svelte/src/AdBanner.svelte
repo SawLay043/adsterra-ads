@@ -8,6 +8,8 @@
   export let className = '';
   export let adLabel = 'Advertisement';
   export let showAdLabel = true;
+  export let showFallbackPlaceholder = false;
+  export let fallbackPlaceholderText = 'Test advertisement';
   export let adLabelPosition:
     | 'top-left'
     | 'top-center'
@@ -22,6 +24,7 @@
   let activeProvider: AdProvider = provider;
   let adLoaded = false;
   let adFailed = false;
+  let currentLoadKey = `${provider}:${format}:${adKey}`;
 
   let config = resolveAdConfig(format, adKey || undefined);
   let iframeSrcDoc = '';
@@ -32,7 +35,15 @@
   let labelAlign = '';
   let visibilityStyle = '';
 
-  $: if (provider !== activeProvider) activeProvider = provider;
+  $: {
+    const nextLoadKey = `${provider}:${format}:${adKey}`;
+    if (nextLoadKey !== currentLoadKey) {
+      currentLoadKey = nextLoadKey;
+      activeProvider = provider;
+      adLoaded = false;
+      adFailed = false;
+    }
+  }
   $: config = resolveAdConfig(format, adKey || undefined);
   $: iframeSrcDoc = buildSrcDoc({ format, provider: activeProvider, config, bannerId });
 
@@ -41,7 +52,7 @@
   $: bottomLabel = showAdLabel && adLabelPosition.startsWith('bottom');
   $: labelSpacing = topLabel ? 'margin-bottom:4px;' : bottomLabel ? 'margin-top:4px;' : '';
   $: labelAlign = `text-align:${adLabelPosition.endsWith('left') ? 'left' : adLabelPosition.endsWith('right') ? 'right' : 'center'};width:100%;`;
-  $: visibilityStyle = adLoaded
+  $: visibilityStyle = adLoaded || (adFailed && showFallbackPlaceholder)
     ? 'opacity:1;transform:scale(1);'
     : 'opacity:0;transform:scale(0.95);pointer-events:none;position:absolute;width:0;height:0;overflow:hidden;';
 
@@ -67,7 +78,7 @@
   });
 </script>
 
-{#if !adFailed}
+{#if !adFailed || showFallbackPlaceholder}
   <div class="{className}" style="{wrapperStyle}{visibilityStyle}">
     {#if topLabel}
       <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;{labelSpacing}{labelAlign}">{adLabel}</span>
@@ -76,16 +87,27 @@
       data-testid="ad-banner"
       style="width:{typeof config.width === 'number' ? `${config.width}px` : config.width};height:{typeof config.height === 'number' ? `${config.height}px` : config.height};overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;background:#f3f4f6;display:flex;align-items:center;justify-content:center;"
     >
-      <iframe
-        title="Advertisement"
-        srcdoc={iframeSrcDoc}
-        width="100%"
-        height="100%"
-        frameborder="0"
-        scrolling="no"
-        sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals"
-        style="display:block;width:100%;height:100%;"
-      ></iframe>
+      {#if adFailed && showFallbackPlaceholder}
+        <div
+          role="img"
+          aria-label="{fallbackPlaceholderText} placeholder"
+          style='width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;padding:12px;color:#475569;background:repeating-linear-gradient(135deg, #f8fafc 0, #f8fafc 10px, #eef2f7 10px, #eef2f7 20px);text-align:center;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;'
+        >
+          <strong style="font-size:13px;line-height:1.2;">{fallbackPlaceholderText}</strong>
+          <span style="font-size:11px;line-height:1.2;">{format}</span>
+        </div>
+      {:else}
+        <iframe
+          title="Advertisement"
+          srcdoc={iframeSrcDoc}
+          width="100%"
+          height="100%"
+          frameborder="0"
+          scrolling="no"
+          sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals"
+          style="display:block;width:100%;height:100%;"
+        ></iframe>
+      {/if}
     </div>
     {#if bottomLabel}
       <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;{labelSpacing}{labelAlign}">{adLabel}</span>

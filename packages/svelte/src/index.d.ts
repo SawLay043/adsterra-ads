@@ -17,6 +17,8 @@ export interface AdBannerProps {
   adLabel?: string;
   showAdLabel?: boolean;
   adLabelPosition?: AdLabelPosition;
+  showFallbackPlaceholder?: boolean;
+  fallbackPlaceholderText?: string;
   onLoad?: () => void;
   onError?: () => void;
 }
@@ -29,6 +31,8 @@ export interface AdContainerProps {
   adLabel?: string;
   showAdLabel?: boolean;
   adLabelPosition?: AdLabelPosition;
+  showFallbackPlaceholder?: boolean;
+  fallbackPlaceholderText?: string;
 }
 
 export interface SocialBarProps {

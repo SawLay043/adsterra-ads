@@ -28,6 +28,8 @@ export const AdBanner = defineComponent({
     adLabel: { type: String, default: 'Advertisement' },
     showAdLabel: { type: Boolean, default: true },
     adLabelPosition: { type: String as PropType<AdLabelPosition>, default: 'top-left' },
+    showFallbackPlaceholder: { type: Boolean, default: false },
+    fallbackPlaceholderText: { type: String, default: 'Test advertisement' },
     className: { type: String, default: '' }
   },
   emits: ['load', 'error'],
@@ -37,7 +39,14 @@ export const AdBanner = defineComponent({
     const adFailed = ref(false);
     const activeProvider = ref<AdProvider>(props.provider);
 
-    watch(() => props.provider, (next) => { activeProvider.value = next; });
+    watch(
+      () => [props.provider, props.format, props.adKey],
+      ([nextProvider]) => {
+        activeProvider.value = nextProvider as AdProvider;
+        adLoaded.value = false;
+        adFailed.value = false;
+      }
+    );
 
     const config = computed(() => resolveAdConfig(props.format, props.adKey || undefined));
     const srcDoc = computed(() =>
@@ -74,7 +83,7 @@ export const AdBanner = defineComponent({
       width: '100%'
     }));
     const visibilityStyle = computed(() =>
-      adLoaded.value
+      adLoaded.value || (adFailed.value && props.showFallbackPlaceholder)
         ? { opacity: '1', transform: 'scale(1)' }
         : {
             opacity: '0',
@@ -105,27 +114,30 @@ export const AdBanner = defineComponent({
     onUnmounted(() => window.removeEventListener('message', onMessage));
 
     return () => {
-      if (adFailed.value) return null;
+      if (adFailed.value && !props.showFallbackPlaceholder) return null;
       const topLabel = props.showAdLabel && props.adLabelPosition.startsWith('top');
       const bottomLabel = props.showAdLabel && props.adLabelPosition.startsWith('bottom');
+      const isPlaceholderVisible = adFailed.value && props.showFallbackPlaceholder;
 
       return h('div', { class: props.className, style: { ...wrapperStyle.value, ...visibilityStyle.value } }, [
         topLabel ? h('span', { style: labelStyle.value }, props.adLabel) : null,
         h('div', { 'data-testid': 'ad-banner', style: style.value }, [
-          h('iframe', {
-            title: 'Advertisement',
-            srcdoc: srcDoc.value,
-            width: '100%',
-            height: '100%',
-            frameborder: '0',
-            scrolling: 'no',
-            sandbox: 'allow-scripts allow-forms allow-same-origin allow-popups allow-modals',
-            style: {
-              display: 'block',
-              width: '100%',
-              height: '100%'
-            }
-          })
+          isPlaceholderVisible
+            ? h(FallbackPlaceholder, { format: props.format, text: props.fallbackPlaceholderText })
+            : h('iframe', {
+                title: 'Advertisement',
+                srcdoc: srcDoc.value,
+                width: '100%',
+                height: '100%',
+                frameborder: '0',
+                scrolling: 'no',
+                sandbox: 'allow-scripts allow-forms allow-same-origin allow-popups allow-modals',
+                style: {
+                  display: 'block',
+                  width: '100%',
+                  height: '100%'
+                }
+              })
         ]),
         bottomLabel ? h('span', { style: labelStyle.value }, props.adLabel) : null
       ]);
@@ -142,15 +154,18 @@ export const AdContainer = defineComponent({
     className: { type: String, default: '' },
     adLabel: { type: String, default: 'Advertisement' },
     showAdLabel: { type: Boolean, default: true },
-    adLabelPosition: { type: String as PropType<AdLabelPosition>, default: 'top-left' }
+    adLabelPosition: { type: String as PropType<AdLabelPosition>, default: 'top-left' },
+    showFallbackPlaceholder: { type: Boolean, default: false },
+    fallbackPlaceholderText: { type: String, default: 'Test advertisement' }
   },
   setup(props) {
     const adLoaded = ref(false);
     const adFailed = ref(false);
 
     return () => {
-      if (adFailed.value) return null;
+      if (adFailed.value && !props.showFallbackPlaceholder) return null;
       const containerVisibilityStyle = adLoaded.value
+        || (adFailed.value && props.showFallbackPlaceholder)
         ? { opacity: '1', transform: 'scale(1)' }
         : {
             opacity: '0',
@@ -170,11 +185,50 @@ export const AdContainer = defineComponent({
           adLabel: props.adLabel,
           showAdLabel: props.showAdLabel,
           adLabelPosition: props.adLabelPosition,
+          showFallbackPlaceholder: props.showFallbackPlaceholder,
+          fallbackPlaceholderText: props.fallbackPlaceholderText,
           onLoad: () => { adLoaded.value = true; },
           onError: () => { adFailed.value = true; }
         })
       ]);
     };
+  }
+});
+
+const FallbackPlaceholder = defineComponent({
+  name: 'FallbackPlaceholder',
+  props: {
+    format: { type: String as PropType<AdFormat>, required: true },
+    text: { type: String, required: true }
+  },
+  setup(props) {
+    return () =>
+      h(
+        'div',
+        {
+          role: 'img',
+          'aria-label': `${props.text} placeholder`,
+          style: {
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            boxSizing: 'border-box',
+            padding: '12px',
+            color: '#475569',
+            background: 'repeating-linear-gradient(135deg, #f8fafc 0, #f8fafc 10px, #eef2f7 10px, #eef2f7 20px)',
+            textAlign: 'center',
+            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+          }
+        },
+        [
+          h('strong', { style: { fontSize: '13px', lineHeight: '1.2' } }, props.text),
+          h('span', { style: { fontSize: '11px', lineHeight: '1.2' } }, props.format)
+        ]
+      );
   }
 });
 
