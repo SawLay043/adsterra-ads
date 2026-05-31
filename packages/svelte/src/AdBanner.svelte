@@ -81,17 +81,17 @@
 {#if !adFailed || showFallbackPlaceholder}
   <div class="{className}" style="{wrapperStyle}{visibilityStyle}">
     {#if topLabel}
-      <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;{labelSpacing}{labelAlign}">{adLabel}</span>
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;{labelSpacing}{labelAlign}">{adLabel}</span>
     {/if}
     <div
       data-testid="ad-banner"
-      style="width:{typeof config.width === 'number' ? `${config.width}px` : config.width};height:{typeof config.height === 'number' ? `${config.height}px` : config.height};overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;background:#f3f4f6;display:flex;align-items:center;justify-content:center;"
+      style="width:{typeof config.width === 'number' ? `${config.width}px` : config.width};height:{typeof config.height === 'number' ? `${config.height}px` : config.height};overflow:hidden;display:flex;align-items:center;justify-content:center;"
     >
       {#if adFailed && showFallbackPlaceholder}
         <div
           role="img"
           aria-label="{fallbackPlaceholderText} placeholder"
-          style='width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;padding:12px;color:#475569;background:repeating-linear-gradient(135deg, #f8fafc 0, #f8fafc 10px, #eef2f7 10px, #eef2f7 20px);text-align:center;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;'
+          style='width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;padding:12px;border:1px dashed currentColor;opacity:0.7;background:transparent;text-align:center;font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;'
         >
           <strong style="font-size:13px;line-height:1.2;">{fallbackPlaceholderText}</strong>
           <span style="font-size:11px;line-height:1.2;">{format}</span>
@@ -110,7 +110,7 @@
       {/if}
     </div>
     {#if bottomLabel}
-      <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;{labelSpacing}{labelAlign}">{adLabel}</span>
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;opacity:0.6;{labelSpacing}{labelAlign}">{adLabel}</span>
     {/if}
   </div>
 {/if}

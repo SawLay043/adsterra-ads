@@ -57,9 +57,6 @@ export const AdBanner = defineComponent({
       width: typeof config.value.width === 'number' ? `${config.value.width}px` : config.value.width,
       height: typeof config.value.height === 'number' ? `${config.value.height}px` : config.value.height,
       overflow: 'hidden',
-      borderRadius: '6px',
-      border: '1px solid #e5e7eb',
-      background: '#f3f4f6',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
@@ -76,7 +73,7 @@ export const AdBanner = defineComponent({
       fontWeight: '600',
       letterSpacing: '0.1em',
       textTransform: 'uppercase',
-      color: '#9ca3af',
+      opacity: '0.6',
       marginBottom: props.adLabelPosition.startsWith('top') ? '4px' : '0',
       marginTop: props.adLabelPosition.startsWith('bottom') ? '4px' : '0',
       textAlign: props.adLabelPosition.endsWith('left') ? 'left' : props.adLabelPosition.endsWith('right') ? 'right' : 'center',
@@ -218,8 +215,9 @@ const FallbackPlaceholder = defineComponent({
             gap: '6px',
             boxSizing: 'border-box',
             padding: '12px',
-            color: '#475569',
-            background: 'repeating-linear-gradient(135deg, #f8fafc 0, #f8fafc 10px, #eef2f7 10px, #eef2f7 20px)',
+            border: '1px dashed currentColor',
+            opacity: '0.7',
+            background: 'transparent',
             textAlign: 'center',
             fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
           }

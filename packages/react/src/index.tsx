@@ -87,7 +87,7 @@ export function AdBanner({
   const wrapperStyle = getWrapperStyle(adLabelPosition);
   const labelStyle = getLabelStyle(adLabelPosition);
   const visibilityStyle = getVisibilityStyle(adLoaded || (adFailed && showFallbackPlaceholder));
-  const bannerStyle = { ...parseStyle(getBannerStyle(config)), overflow: 'hidden', borderRadius: 6, border: '1px solid #e5e7eb', background: '#f3f4f6' };
+  const bannerStyle = { ...parseStyle(getBannerStyle(config)), overflow: 'hidden' };
 
   return (
     <div className={`${className ?? ''}`.trim()} style={{ ...wrapperStyle, ...visibilityStyle }}>
@@ -181,7 +181,7 @@ function getLabelStyle(position: AdLabelPosition): React.CSSProperties {
     fontWeight: 600,
     letterSpacing: '0.1em',
     textTransform: 'uppercase',
-    color: '#9ca3af',
+    opacity: 0.6,
     marginBottom: position.startsWith('top') ? 4 : 0,
     marginTop: position.startsWith('bottom') ? 4 : 0,
     textAlign: position.endsWith('left') ? 'left' : position.endsWith('right') ? 'right' : 'center',
@@ -217,8 +217,9 @@ function FallbackPlaceholder({ format, text }: { format: AdFormat; text: string 
         gap: 6,
         boxSizing: 'border-box',
         padding: 12,
-        color: '#475569',
-        background: 'repeating-linear-gradient(135deg, #f8fafc 0, #f8fafc 10px, #eef2f7 10px, #eef2f7 20px)',
+        border: '1px dashed currentColor',
+        opacity: 0.7,
+        background: 'transparent',
         textAlign: 'center',
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
       }}
